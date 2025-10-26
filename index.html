@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMarket - Vente de Voitures</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Ajout de Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .product-card:hover .product-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        /* Styles pour le swiper publicitaire */
+      .ad-swiper {
+    width: 100%;
+    height: 150px;
+    margin: 0 0 20px;
+}
+
+.ad-swiper .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.ad-swiper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    /* Amélioration de la qualité */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    filter: brightness(1.05); /* Légère correction de luminosité */
+}
+
+@media (min-width: 768px) {
+    .ad-swiper {
+        height: 200px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .ad-swiper {
+        height: 250px;
+    }
+}
+        /* Styles pour la galerie d'images voiture */
+        .car-gallery {
+            width: 100%;
+            height: 400px;
+        }
+
+        .car-gallery .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+
+        .car-gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-slider {
+            margin-top: 10px;
+            height: 80px;
+        }
+
+        .thumbnail-slider .swiper-slide {
+            opacity: 0.4;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .thumbnail-slider .swiper-slide-thumb-active {
+            opacity: 1;
+            border-color: #4f46e5;
+        }
+
+        .thumbnail-slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* BOUTON WHATSAPP FLOTTANT */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+            text-decoration: none;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-float:active {
+            transform: scale(0.95);
+        }
+
+        .whatsapp-icon-float {
+            color: white;
+            font-size: 28px;
+        }
+
+        /* Animation de pulsation */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(37, 211, 102, 0.8);
+            }
+            100% {
+                box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            }
+        }
+
+        /* Tooltip pour le bouton WhatsApp */
+        .whatsapp-tooltip {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .whatsapp-float:hover .whatsapp-tooltip {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Media queries pour le bouton WhatsApp */
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                width: 55px;
+                height: 55px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .whatsapp-icon-float {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                bottom: 15px;
+                right: 15px;
+            }
+            
+            .whatsapp-icon-float {
+                font-size: 22px;
+            }
+            
+            .whatsapp-tooltip {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+        }
+
+        /* Media queries */
+        @media (min-width: 768px) {
+            .ad-swiper {
+                height: 200px;
+            }
+            .car-gallery {
+                height: 500px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .ad-swiper {
+                height: 250px;
+            }
+            .car-gallery {
+                height: 600px;
+            }
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+        
+        .logo-img {
+            height: 40px;
+            width: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <!-- Logo PNG remplaçant l'icône Font Awesome -->
+                <img src="c:\Users\Lenovo\Documents\route\jgfbbbb.jpg" alt="AutoMarket Logo" class="logo-img">
+                <span class="font-bold text-xl text-gray-800">TIMO</span>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-indigo-600">
+                        <i class="fas fa-user text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Bannière publicitaire avec Swiper -->
+    <div class="container mx-auto px-4">
+        <div class="swiper ad-swiper">
+            <div class="swiper-wrapper">
+                <!-- Slide 1 -->
+                <div class="swiper-slide">
+                    <img src="c:\Users\Lenovo\Documents\1.jpg" alt="Promotion Voitures">
+                </div>
+                <!-- Slide 2 -->
+                <div class="swiper-slide">
+                    <img src="c:\Users\Lenovo\Documents\Capture d’écran 2025-10-23 210014.png" alt="Nouveaux Modèles">
+                </div>
+                <!-- Slide 3 -->
+                <div class="swiper-slide">
+                    <img src="c:\Users\Lenovo\Documents\JJJJJ.jpg" alt="Voitures d'Occasion">
+                </div>
+            </div>
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <!-- Filtres de recherche - MODIFICATION ICI -->
+    <div class="container mx-auto px-4 mb-8">
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex flex-nowrap justify-center gap-4 overflow-x-auto">
+                <button class="filter-btn active bg-indigo-600 text-white rounded-lg px-6 py-3 font-semibold transition duration-300 whitespace-nowrap" data-filter="all">
+                    Tout
+                </button>
+                <button class="filter-btn bg-gray-200 text-gray-700 rounded-lg px-6 py-3 font-semibold hover:bg-gray-300 transition duration-300 whitespace-nowrap" data-filter="new">
+                    Neuf
+                </button>
+                <button class="filter-btn bg-gray-200 text-gray-700 rounded-lg px-6 py-3 font-semibold hover:bg-gray-300 transition duration-300 whitespace-nowrap" data-filter="used">
+                    Occasion
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section des voitures -->
+    <section id="cars-section" class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Nos Véhicules</h2>
+           
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+ <!-- Voiture 1 - Occasion -->
+                <div class="product-card car-item bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 relative" data-type="used">
+                    <div class="w-full h-48 bg-gray-200 relative">
+                        <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                             alt="Mercedes Classe A" class="w-full h-full object-cover">
+                        <div class="product-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center space-x-4 opacity-0 transition duration-300">
+                            <button class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-indigo-500 hover:text-white" onclick="quickView(1)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">PROMO</div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-2">Mercedes Classe A</h3>
+                        <div class="text-sm text-gray-600 mb-2">
+                            <div class="flex items-center space-x-4 mb-2">
+                                <span><i class="fas fa-tachometer-alt mr-1"></i> 45 000 km</span>
+                                <span><i class="fas fa-calendar mr-1"></i> 2021</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span><i class="fas fa-gas-pump mr-1"></i> Diesel</span>
+                                <span><i class="fas fa-cog mr-1"></i> Automatique</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <div>
+                                <span class="text-gray-900 font-bold text-lg">18 935 500 CFA</span>
+                             
+                            </div>
+                            <a href="s1.html" class="view-more text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded text-sm">
+                                Voir plus
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+ <!-- Voiture 2 - Occasion -->
+                <div class="product-card car-item bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 relative" data-type="used">
+                    <div class="w-full h-48 bg-gray-200 relative">
+                        <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1450&q=80" 
+                             alt="BMW Série 3" class="w-full h-full object-cover">
+                        <div class="product-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center space-x-4 opacity-0 transition duration-300">
+                            <button class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-indigo-500 hover:text-white" onclick="quickView(2)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-2">BMW Série 3</h3>
+                        <div class="text-sm text-gray-600 mb-2">
+                            <div class="flex items-center space-x-4 mb-2">
+                                <span><i class="fas fa-tachometer-alt mr-1"></i> 32 000 km</span>
+                                <span><i class="fas fa-calendar mr-1"></i> 2022</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span><i class="fas fa-gas-pump mr-1"></i> Essence</span>
+                                <span><i class="fas fa-cog mr-1"></i> Automatique</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <div>
+                                <span class="text-gray-900 font-bold text-lg">27 182 500 CFA</span>
+                            </div>
+                            <a href="detail.html?id=2" class="view-more text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded text-sm">
+                                Voir plus
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+ <!-- Voiture 3 - Neuf -->
+                <div class="product-card car-item bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 relative" data-type="new">
+                    <div class="w-full h-48 bg-gray-200 relative">
+                        <img src="c:/Users/Lenovo/Documents/route/1600w-cm3ek5ZThyk.webp" 
+                             alt="Audi Q5" class="w-full h-full object-cover">
+                        <div class="product-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center space-x-4 opacity-0 transition duration-300">
+                            <button class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-indigo-500 hover:text-white" onclick="quickView(3)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="absolute top-2 right-2 bg-indigo-500 text-white text-xs px-2 py-1 rounded">NEUF</div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-2">Audi Q5</h3>
+                        <div class="text-sm text-gray-600 mb-2">
+                            <div class="flex items-center space-x-4 mb-2">
+                                <span><i class="fas fa-tachometer-alt mr-1"></i> 8 000 km</span>
+                                <span><i class="fas fa-calendar mr-1"></i> 2023</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span><i class="fas fa-gas-pump mr-1"></i> Hybride</span>
+                                <span><i class="fas fa-cog mr-1"></i> Automatique</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <div>
+                                <span class="text-gray-900 font-bold text-lg">34 649 500 CFA</span>
+                            </div>
+                            <a href="detail.html?id=3" class="view-more text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded text-sm">
+                                Voir plus
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+ <!-- Voiture 4 - Occasion -->
+                <div class="product-card car-item bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 relative" data-type="used">
+                    <div class="w-full h-48 bg-gray-200 relative">
+                        <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                             alt="Peugeot 308" class="w-full h-full object-cover">
+                        <div class="product-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center space-x-4 opacity-0 transition duration-300">
+                            <button class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-indigo-500 hover:text-white" onclick="quickView(4)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-2">Peugeot 308</h3>
+                        <div class="text-sm text-gray-600 mb-2">
+                            <div class="flex items-center space-x-4 mb-2">
+                                <span><i class="fas fa-tachometer-alt mr-1"></i> 67 000 km</span>
+                                <span><i class="fas fa-calendar mr-1"></i> 2020</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span><i class="fas fa-gas-pump mr-1"></i> Diesel</span>
+                                <span><i class="fas fa-cog mr-1"></i> Manuelle</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <div>
+                                <span class="text-gray-900 font-bold text-lg">12 379 500 CFA</span>
+                               
+                            </div>
+                            <a href="detail.html?id=4" class="view-more text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded text-sm">
+                                Voir plus
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+  <!-- Voiture 5 - Neuf -->
+                <div class="product-card car-item bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 relative" data-type="new">
+                    <div class="w-full h-48 bg-gray-200 relative">
+                        <img src="https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" 
+                             alt="Tesla Model 3" class="w-full h-full object-cover">
+                        <div class="product-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center space-x-4 opacity-0 transition duration-300">
+                            <button class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-indigo-500 hover:text-white" onclick="quickView(5)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="absolute top-2 right-2 bg-indigo-500 text-white text-xs px-2 py-1 rounded">NEUF</div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-2">Tesla Model 3</h3>
+                        <div class="text-sm text-gray-600 mb-2">
+                            <div class="flex items-center space-x-4 mb-2">
+                                <span><i class="fas fa-tachometer-alt mr-1"></i> 0 km</span>
+                                <span><i class="fas fa-calendar mr-1"></i> 2023</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span><i class="fas fa-bolt mr-1"></i> Électrique</span>
+                                <span><i class="fas fa-cog mr-1"></i> Automatique</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <div>
+                                <span class="text-gray-900 font-bold text-lg">28 158 450 CFA</span>
+                            </div>
+                            <a href="detail.html?id=5" class="view-more text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded text-sm">
+                                Voir plus
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+ <!-- Voiture 6 - Neuf -->
+                <div class="product-card car-item bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-300 relative" data-type="new">
+                    <div class="w-full h-48 bg-gray-200 relative">
+                        <img src="https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" 
+                             alt="Tesla Model 3" class="w-full h-full object-cover">
+                        <div class="product-actions absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center space-x-4 opacity-0 transition duration-300">
+                            <button class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-indigo-500 hover:text-white" onclick="quickView(5)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="absolute top-2 right-2 bg-indigo-500 text-white text-xs px-2 py-1 rounded">NEUF</div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 mb-2">Tesla Model 3</h3>
+                        <div class="text-sm text-gray-600 mb-2">
+                            <div class="flex items-center space-x-4 mb-2">
+                                <span><i class="fas fa-tachometer-alt mr-1"></i> 0 km</span>
+                                <span><i class="fas fa-calendar mr-1"></i> 2023</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span><i class="fas fa-bolt mr-1"></i> Électrique</span>
+                                <span><i class="fas fa-cog mr-1"></i> Automatique</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <div>
+                                <span class="text-gray-900 font-bold text-lg">28 158 450 CFA</span>
+                            </div>
+                            <a href="detail.html?id=5" class="view-more text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded text-sm">
+                                Voir plus
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOUTON WHATSAPP FLOTTANT -->
+    <a href="https://wa.me/221781921199?text=Bonjour! Je suis intéressé par vos véhicules. Pouvez-vous me renseigner ?" 
+       class="whatsapp-float" 
+       target="_blank"
+       rel="noopener noreferrer">
+        <i class="fab fa-whatsapp whatsapp-icon-float"></i>
+       
+    </a>
+
+    <!-- Ajout de Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        // Variables globales pour les swipers
+        let gallerySwiper, thumbnailSwiper;
+        let currentCarId = null;
+
+        // Taux de change: 1€ = 655 CFA
+        const EXCHANGE_RATE = 655;
+
+        // Initialisation de Swiper pour la bannière
+        document.addEventListener('DOMContentLoaded', function() {
+            const adSwiper = new Swiper('.ad-swiper', {
+                loop: true,
+                autoplay: {
+                    delay: 2000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    320: {
+                        slidesPerView: 1,
+                        spaceBetween: 10
+                    },
+                    768: {
+                        slidesPerView: 1,
+                        spaceBetween: 20
+                    },
+                    1024: {
+                        slidesPerView: 1,
+                        spaceBetween: 10
+                    }
+                }
+            });
+
+            // Initialisation des filtres
+            initializeFilters();
+        });
+
+        // Fonction pour initialiser les filtres
+        function initializeFilters() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Retirer la classe active de tous les boutons
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active', 'bg-indigo-600', 'text-white');
+                        btn.classList.add('bg-gray-200', 'text-gray-700');
+                    });
+                    
+                    // Ajouter la classe active au bouton cliqué
+                    this.classList.remove('bg-gray-200', 'text-gray-700');
+                    this.classList.add('active', 'bg-indigo-600', 'text-white');
+                    
+                    // Filtrer les voitures
+                    const filter = this.getAttribute('data-filter');
+                    filterCars(filter);
+                });
+            });
+        }
+
+        // Fonction pour filtrer les voitures
+        function filterCars(filter) {
+            const carItems = document.querySelectorAll('.car-item');
+            
+            carItems.forEach(item => {
+                if (filter === 'all') {
+                    item.style.display = 'block';
+                } else {
+                    if (item.getAttribute('data-type') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Fonction pour convertir Euros en CFA
+        function convertToCFA(euroPrice) {
+            return Math.round(euroPrice * EXCHANGE_RATE).toLocaleString();
+        }
+
+        // Fonction pour formater le prix en CFA
+        function formatPriceCFA(price) {
+            return `${convertToCFA(price)} CFA`;
+        }
+
+        // Fonction quick view (conservée pour compatibilité)
+        function quickView(carId) {
+            // Rediriger vers la page de détail
+            window.location.href = `detail.html?id=${carId}`;
+        }
+    </script>
+</body>
+</html>
